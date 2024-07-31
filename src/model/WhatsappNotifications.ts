@@ -51,3 +51,4 @@ export class WhatsappNotifications implements INotificationProvider {
         this.client.sendMessage("573197208628@c.us", message);
     }
 }
+
