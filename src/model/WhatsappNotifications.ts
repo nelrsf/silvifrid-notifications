@@ -28,6 +28,7 @@ export class WhatsappNotifications implements INotificationProvider {
 
 
         this.client.on("qr", (qr) => {
+            this.logger.log("qr generado \n");
             this.logger.log(qr);
             qrcode.generate(qr, { small: true });
         });
