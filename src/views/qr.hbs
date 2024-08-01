@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp QR Code</title>
+</head>
+<body>
+    <h1>Scan this QR code with WhatsApp</h1>
+    {{#if qr}}
+        <img src="{{qr}}" alt="QR Code" />
+    {{else}}
+        <p>{{message}}</p>
+    {{/if}}
+</body>
+</html>
