@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { NotificationsController } from './notifications.controller';
 import { WhatsappNotifications } from 'src/model/WhatsappNotifications';
-import * as hbs from 'hbs';
-import { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule } from '@nestjs/config';
+import { HandlebarsProvider } from './handlebars.provider';
 
 @Module({
   controllers: [NotificationsController],
@@ -12,11 +9,8 @@ import { ConfigModule } from '@nestjs/config';
     {
       provide: 'INotificationProvider',
       useClass: WhatsappNotifications
-    }
+    },
+    HandlebarsProvider
   ],
 })
-export class NotificationsModule {
-  constructor() {
-    hbs.registerPartials(join(__dirname,'..','..','src','templates'));
-  }
-}
+export class NotificationsModule {}
