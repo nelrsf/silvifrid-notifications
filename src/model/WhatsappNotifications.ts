@@ -1,6 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
-import * as qrcode from 'qrcode';
-import { Client, LocalAuth, NoAuth } from "whatsapp-web.js";
+import { Injectable } from "@nestjs/common";
 import { INotificationProvider } from "./INotificationProvider";
 import { ConfigService } from "@nestjs/config";
 import { Twilio } from 'twilio';
@@ -21,7 +19,7 @@ export class WhatsappNotifications implements INotificationProvider {
   async sendNotification(message: string): Promise<void> {
     const targetPhone = this.config.get<string>("TARGET_PHONE");
     await this.client.messages.create({
-      from: 'whatsapp:+14155238886', // Número de WhatsApp de Twilio
+      from: 'whatsapp:+14155238886',
       to: `whatsapp:${targetPhone}`,
       body: message,
     });
