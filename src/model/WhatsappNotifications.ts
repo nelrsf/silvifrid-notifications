@@ -15,11 +15,7 @@ export class WhatsappNotifications implements INotificationProvider {
 
   async initializeClient(): Promise<void> {
 
-    this.client = new Client({
-      puppeteer: {
-        headless: false
-      }
-    });
+    this.client = new Client({});
 
     this.client.on('ready', () => {
       this.logger.log('WhatsApp client is ready!');
