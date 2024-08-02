@@ -18,12 +18,6 @@ export class WhatsappNotifications implements INotificationProvider {
     const executablePath = await chromium.executablePath;
     
     this.client = new Client({
-      puppeteer: {
-        headless: false,
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath,
-      },
       authStrategy: new NoAuth(),
     });
 
@@ -37,6 +31,7 @@ export class WhatsappNotifications implements INotificationProvider {
       if (msg.body == '!ping') {
         msg.reply('pong');
       }
+
     });
 
     this.client.on('qr', async (qr) => {
