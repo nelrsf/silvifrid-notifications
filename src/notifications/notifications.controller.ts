@@ -26,7 +26,7 @@ export class NotificationsController {
         throw new HttpException('Provider is not WhatsappNotifications', HttpStatus.BAD_REQUEST);
       }
     } catch (error) {
-      throw new HttpException('Failed to initialize WhatsApp client', error);
+      throw new HttpException('Failed to initialize WhatsApp client' + error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
