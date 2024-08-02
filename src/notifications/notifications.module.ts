@@ -7,11 +7,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname,'..','..','src','templates'),
-    })    
-  ],
   controllers: [NotificationsController],
   providers: [
     {
