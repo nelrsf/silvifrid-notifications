@@ -16,28 +16,4 @@ export class NotificationsController {
     }
   }
 
-  @Get("/initializewp")
-  async initialize() {
-    try {
-      if (this.notificationsProvider instanceof WhatsappNotifications) {
-        await this.notificationsProvider.initializeClient();
-        return { message: "WhatsApp client initialized successfully" };
-      } else {
-        throw new HttpException('Provider is not WhatsappNotifications', HttpStatus.BAD_REQUEST);
-      }
-    } catch (error) {
-      throw new HttpException('Failed to initialize WhatsApp client' + error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  @Get('qr')
-  @Render('qr')
-  getQRCode() {
-    if (this.notificationsProvider instanceof WhatsappNotifications) {
-      const qr = this.notificationsProvider.getQRCode();
-      return qr ? { qr } : { message: 'QR code not generated yet.' };
-    } else {
-      return { message: 'WhatsApp provider not available.' };
-    }
-  }
 }

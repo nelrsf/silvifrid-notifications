@@ -3,54 +3,29 @@ import * as qrcode from 'qrcode';
 import { Client, LocalAuth, NoAuth } from "whatsapp-web.js";
 import { INotificationProvider } from "./INotificationProvider";
 import { ConfigService } from "@nestjs/config";
-import chromium from 'chrome-aws-lambda';
+import { Twilio } from 'twilio';
 
 
 @Injectable()
 export class WhatsappNotifications implements INotificationProvider {
-  private client: Client;
-  private readonly logger = new Logger(WhatsappNotifications.name);
-  private qrCodeImage: string | null = null;
 
-  constructor(private readonly config: ConfigService){}
+  private client: Twilio;
 
-  async initializeClient(): Promise<void> {
-    const executablePath = await chromium.executablePath;
-    
-    this.client = new Client({
-      authStrategy: new NoAuth(),
-    });
-
-    this.client.on('ready', () => {
-      this.logger.log('WhatsApp client is ready!');
-    });
-
-    this.client.on('message', async msg => {
-      const chat = await msg.getChat();
-      console.log(chat.id);
-      if (msg.body == '!ping') {
-        msg.reply('pong');
-      }
-
-    });
-
-    this.client.on('qr', async (qr) => {
-      this.logger.log("qr generado \n");
-      this.logger.log(qr);
-
-      // Generar la imagen del QR en base64
-      this.qrCodeImage = await qrcode.toDataURL(qr);
-    });
-
-    await this.client.initialize();
+  constructor(private readonly config: ConfigService){
+    this.client = new Twilio(
+      this.config.get<string>('TWILIO_ACCOUNT_SID'),
+      this.config.get<string>('TWILIO_AUTH_TOKEN'),
+    )
   }
 
-  sendNotification(message: string): void {
-    const chatId = this.config.get<string>("TARGET_PHONE");
-    this.client.sendMessage(chatId, message);
+  async sendNotification(message: string): Promise<void> {
+    const targetPhone = this.config.get<string>("TARGET_PHONE");
+    await this.client.messages.create({
+      from: 'whatsapp:+14155238886', // Número de WhatsApp de Twilio
+      to: `whatsapp:${targetPhone}`,
+      body: message,
+    });
+
   }
 
-  getQRCode(): string | null {
-    return this.qrCodeImage; // Devuelve la imagen del QR en base64
-  }
 }
