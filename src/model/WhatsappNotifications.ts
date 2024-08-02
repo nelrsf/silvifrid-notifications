@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import * as qrcode from 'qrcode';
-import { Client, LocalAuth } from "whatsapp-web.js";
+import { Client, LocalAuth, NoAuth } from "whatsapp-web.js";
 import { INotificationProvider } from "./INotificationProvider";
 import { ConfigService } from "@nestjs/config";
 import chromium from 'chrome-aws-lambda';
@@ -24,7 +24,7 @@ export class WhatsappNotifications implements INotificationProvider {
         defaultViewport: chromium.defaultViewport,
         executablePath,
       },
-      authStrategy: new LocalAuth(),
+      authStrategy: new NoAuth(),
     });
 
     this.client.on('ready', () => {
