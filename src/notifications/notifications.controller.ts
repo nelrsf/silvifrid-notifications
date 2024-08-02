@@ -12,7 +12,7 @@ export class NotificationsController {
     try {
       return await this.notificationsProvider.sendNotification(createNotificationDto.message);
     } catch (error) {
-      throw new HttpException('Failed to send notification', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to send notification' + error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
