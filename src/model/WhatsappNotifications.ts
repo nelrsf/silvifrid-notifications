@@ -1,8 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
 import * as qrcode from 'qrcode';
-import { Client } from "whatsapp-web.js";
+import { Client, LocalAuth, NoAuth } from "whatsapp-web.js";
 import { INotificationProvider } from "./INotificationProvider";
 import { ConfigService } from "@nestjs/config";
+import chromium from 'chrome-aws-lambda';
 
 
 @Injectable()
@@ -14,8 +15,17 @@ export class WhatsappNotifications implements INotificationProvider {
   constructor(private readonly config: ConfigService){}
 
   async initializeClient(): Promise<void> {
-
-    this.client = new Client({});
+    const executablePath = await chromium.executablePath;
+    
+    this.client = new Client({
+      puppeteer: {
+        headless: false,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath,
+      },
+      authStrategy: new NoAuth(),
+    });
 
     this.client.on('ready', () => {
       this.logger.log('WhatsApp client is ready!');
