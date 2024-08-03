@@ -8,7 +8,7 @@ export class EmailNotifications implements INotificationProvider {
     private transporter: nodemailer.Transporter;
 
     constructor() {
-        const transporter = nodemailer.createTransport({
+        this.transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
                 user: process.env.EMAIL_TRANSPORTER,
