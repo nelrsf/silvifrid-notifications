@@ -6,6 +6,7 @@ import { WhatsappNotifications } from './model/WhatsappNotifications';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { EmailNotifications } from './model/EmailNotifications';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { join } from 'path';
     NotificationsModule
   ],
   controllers: [AppController],
-  providers: [AppService, WhatsappNotifications],
+  providers: [AppService, WhatsappNotifications, EmailNotifications],
 })
 export class AppModule { }
